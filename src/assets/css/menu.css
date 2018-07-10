@@ -1,0 +1,38 @@
+.menu-feature {
+    display: flex;
+    flex-direction: column;
+    background-color: #77C9D4;
+    height: 100vh;
+    width: 20vw;
+    overflow-y: scroll;
+}
+
+.menu-item {
+    display: flex;
+    margin-right: auto;
+    margin-left: auto;
+    border-radius: 10%;
+    flex-direction: row;
+    color: white;
+    font-size: 3vh;
+    margin: 5 5 5 5;
+    width: 90%;
+}
+
+.menu-item-text {
+    width: 60%;
+    text-align: center;
+}
+
+.menu-item-icon {
+    width: 20%;
+    text-align: center;
+}
+
+.menu-item:hover {
+    color: #525252;
+    border-radius: 5px;
+    background: #57BC90
+}
+
+

@@ -1,19 +1,32 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import {BrowserRouter,Route,Switch} from 'react-router-dom';
+import ProjectPage from './pages/ProjectPage'
+import DashboardPage from './pages/DashboardPage'
+import LiveMsgPage from './pages/LiveMsgPage'
+import Nav from './components/Nav'
+import Footer from './components/Footer'
+import 'typeface-roboto'
+import './assets/css/page.css'
+import theme from './theme'
+import { MuiThemeProvider } from '@material-ui/core/styles';
 
-class App extends Component {
+
+class App extends React.Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
+      <BrowserRouter>
+      <React.Fragment>
+          <MuiThemeProvider theme={theme}>
+          <Nav/>
+          <Switch>
+            <Route exact path="/project" component={ProjectPage}/>
+            <Route exact path="/dashboard" component={DashboardPage}/>
+            <Route exact path="/live_message" component={LiveMsgPage}/>
+          </Switch>
+          <Footer/>
+          </MuiThemeProvider>
+      </React.Fragment>
+      </BrowserRouter>
     );
   }
 }
