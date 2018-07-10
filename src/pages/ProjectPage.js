@@ -40,6 +40,7 @@ class ProjectPage extends React.Component{
                             projName={proj.projName} 
                             desc={proj.desc} 
                             keywords={proj.keywords}
+                            excludeKeywords={proj.excludeKeywords}
                             useCrawler={proj.useCrawler}
                         />
                     )

@@ -17,24 +17,24 @@ class FilterDialog extends React.Component {
             selectInt : false,
             selectPro : false   
         }
-        this.sentiments = ['Positive',
-                            'Neutral',
-                            'Negative']
-        this.intentions = ['General', 
-                            'Information', 
-                            'Participation', 
-                            'Enquiry', 
-                            'Compliment', 
-                            'Complaint']
-        this.products = ['Others', 
-                        'Internet Banking', 
-                        'Money Transfer' , 
-                        'ATM/Debit Card', 
-                        'Corporate' , 
-                        'Deposit Account' , 
-                        'Investment',
-                        'Branch',
-                        'Call Center']
+        this.sentiments = ['positive',
+                            'neutral',
+                            'negative']
+        this.intentions = ['general', 
+                            'information', 
+                            'participation', 
+                            'enquiry', 
+                            'compliment', 
+                            'complaint/suggestion']
+        this.products = ['others', 
+                        'internet banking', 
+                        'money transfer' , 
+                        'atm/debit card', 
+                        'corporate' , 
+                        'deposit account' , 
+                        'investment',
+                        'branch',
+                        'call center']
     }
 
     handleOnChange = (name) => (e) => {

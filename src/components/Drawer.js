@@ -71,6 +71,7 @@ class Drawer extends React.Component{
                         </ListItem>
                     </Link>
                     <Divider />
+                    <Link to="/tagging" style={{ textDecoration: 'none' }}>
                     <ListItem button>
                         <Avatar>
                             <Icon color='secondary'>local_offer</Icon>
@@ -79,6 +80,7 @@ class Drawer extends React.Component{
                             Tagging
                         </ListItemText>
                     </ListItem>
+                    </Link>
                     <Divider />
                     <Link to="/live_message" style={{ textDecoration: 'none' }}>
                     <ListItem button>

@@ -12,7 +12,7 @@ class DownloadDialog extends React.Component{
             file: null,
             errMsg: ''
         }
-        this.pid = this.props.pid
+        console.log(this.props)
     }
 
     handleFileUpload = () => {
@@ -20,7 +20,9 @@ class DownloadDialog extends React.Component{
         this.setState({isLoding:true})
         console.log(this.pid)
         data.append('file', this.state.file);
-        data.append('pid', this.pid);
+        data.append('pid', this.props.pid);
+        data.append('keywords', this.props.keywords);
+        data.append('excludeKeywords', this.props.excludeKeywords);
         axios.post('/upload/csv', data ).then((res)=>{
             this.setState({isLoding:false})
             if (!res.data.isSuccess){

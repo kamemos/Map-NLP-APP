@@ -1,5 +1,6 @@
 import React from 'react'
 import DownloadDialog from './DownloadDialog'
+import { Link } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -137,9 +138,11 @@ class ProjectCard extends React.Component {
                 <Divider />
                 <div style={{height:'5px'}}/>
                 <CardActions className={this.props.classes.cardBottom}>
+                    <Link to="ideas" params={{pid:this.props.id}}>
                     <Button size="small" color="primary">
                         Dashboard
                     </Button>
+                    </Link>
                     {(this.props.useCrawler) ? <Button size="small" onClick={()=>{this.setState({openUpload:true})}} variant="contained" color="secondary">upload</Button> : ''}
                 </CardActions>
             </Card>
@@ -147,6 +150,8 @@ class ProjectCard extends React.Component {
                 open={this.state.openUpload} 
                 close={()=>{this.setState({openUpload:false})}}
                 pid={this.props.id}
+                keywords={this.props.keywords}
+                excludeKeywords={this.props.excludeKeywords}
             />
             </React.Fragment>
         )

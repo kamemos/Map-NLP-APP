@@ -3,6 +3,7 @@ import {BrowserRouter,Route,Switch} from 'react-router-dom';
 import ProjectPage from './pages/ProjectPage'
 import DashboardPage from './pages/DashboardPage'
 import LiveMsgPage from './pages/LiveMsgPage'
+import TaggingPage from './pages/TaggingPage'
 import Nav from './components/Nav'
 import Footer from './components/Footer'
 import 'typeface-roboto'
@@ -20,8 +21,9 @@ class App extends React.Component {
           <Nav/>
           <Switch>
             <Route exact path="/project" component={ProjectPage}/>
-            <Route exact path="/dashboard" component={DashboardPage}/>
+            <Route exact path="/dashboard/:pid" component={DashboardPage}/>
             <Route exact path="/live_message" component={LiveMsgPage}/>
+            <Route exact path="/tagging" component={TaggingPage}/>
           </Switch>
           <Footer/>
           </MuiThemeProvider>
