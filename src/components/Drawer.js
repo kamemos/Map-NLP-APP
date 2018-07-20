@@ -38,7 +38,7 @@ class Drawer extends React.Component{
             <div>
                 <List>
                     <Divider />
-                    <Link to="/home" style={{ textDecoration: 'none' }}>
+                    {/* <Link to="/home" style={{ textDecoration: 'none' }}>
                     <ListItem button>
                         <Avatar>
                             <Icon color='secondary'>home</Icon>
@@ -48,7 +48,7 @@ class Drawer extends React.Component{
                         </ListItemText>
                     </ListItem>
                     </Link>
-                    <Divider />
+                    <Divider /> */}
                     <Link to="/project" style={{ textDecoration: 'none' }}>
                         <ListItem button>
                             <Avatar>
@@ -60,17 +60,7 @@ class Drawer extends React.Component{
                         </ListItem>
                     </Link>
                     <Divider />
-                    <Link to="/dashboard" style={{ textDecoration: 'none' }}>
-                        <ListItem button>
-                            <Avatar>
-                                <Icon color='secondary'>insert_chart_outlined</Icon>
-                            </Avatar>
-                            <ListItemText>
-                                Dashboard
-                            </ListItemText>
-                        </ListItem>
-                    </Link>
-                    <Divider />
+                    {/* <Divider />
                     <Link to="/tagging" style={{ textDecoration: 'none' }}>
                     <ListItem button>
                         <Avatar>
@@ -80,7 +70,7 @@ class Drawer extends React.Component{
                             Tagging
                         </ListItemText>
                     </ListItem>
-                    </Link>
+                    </Link> */}
                     <Divider />
                     <Link to="/live_message" style={{ textDecoration: 'none' }}>
                     <ListItem button>

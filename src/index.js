@@ -1,10 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-import './assets/font_awesome_sass/fontawesome.scss';
-import './assets/font_awesome_sass/fa-solid.scss';
-import './assets/font_awesome_sass/fa-brands.scss';
+import editDialogStore from './store/EditDialogStore'    
 import registerServiceWorker from './registerServiceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App/>, document.getElementById('root'));
 registerServiceWorker();

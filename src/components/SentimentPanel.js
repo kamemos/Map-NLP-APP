@@ -3,6 +3,8 @@ import { ExpansionPanel,ExpansionPanelSummary,ExpansionPanelDetails,ExpansionPan
 import { Dialog,DialogTitle,DialogContent,DialogActions } from '@material-ui/core';
 import { List,ListItemText,ListItem } from '@material-ui/core';
 import FilterDialog from './FilterDialog';
+import SummaryDialog from './SummaryDialog';
+import SampleDialog from './SampleDialog';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import Icon from '@material-ui/core/Icon';
@@ -10,6 +12,7 @@ import Button from '@material-ui/core/Button';
 import { Doughnut } from 'react-chartjs-2';
 import { withStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
+import axios from 'axios';
 
 const styles = (theme) => ({
     root : {
@@ -28,27 +31,58 @@ const styles = (theme) => ({
     }
 });
 
-class OverviewPanel extends React.Component {
+class SentimentPanel extends React.Component {
     constructor(props) {
         super(props)
-        this.state = { openSumDialog : false,
-                       openFltDialog : false,
-                       target : 'sentiment',
-                       sentiments : [],
-                       intentions : [],
-                       products : [],
-                     }
-        this.data = { datasets : [{
-                            data:[10,20,30],
-                            borderWidth: 1,
-                            borderColor: ['rgba(255,99,132,1)','rgba(54,162,235,1)','rgba(0,200,83,1)'],
-                            backgroundColor: ['rgba(255,99,132,0.2)','rgba(54,162,235,0.2)','rgba(0,200,83,0.2)'],
-                            hoverBackgroundColor: ['rgba(255,99,132,0.4)','rgba(54,162,235,0.4)','rgba(0,200,83,0.4)']}],
-                            labels : ['negative','neutral','positive']
-                    }
+        this.state = { 
+            openSumDialog : false,
+            openFltDialog : false,
+            openSamDialog : false,
+            samples : [],
+            filteredSamples : [],
+            data : [],
+            label: [],
+            isLoading : false,
+            field: '',
+            target: '',
+            dataset : { datasets : [{
+                data:[],
+                borderWidth: 1,
+                borderColor: ['rgba(255,99,132,1)','rgba(54,162,235,1)','rgba(0,200,83,1)'],
+                backgroundColor: ['rgba(255,99,132,0.2)','rgba(54,162,235,0.2)','rgba(0,200,83,0.2)'],
+                hoverBackgroundColor: ['rgba(255,99,132,0.4)','rgba(54,162,235,0.4)','rgba(0,200,83,0.4)']}],
+                labels : []
+            }
+        }
+        this.pid = this.props.pid
     }
 
+    handleChangeDataset = (values,labels) => {
+        let dataset = { datasets : [{
+            data: values,
+            borderWidth: 1,
+            borderColor: ['rgba(255,99,132,1)','rgba(54,162,235,1)','rgba(0,200,83,1)'],
+            backgroundColor: ['rgba(255,99,132,0.2)','rgba(54,162,235,0.2)','rgba(0,200,83,0.2)'],
+            hoverBackgroundColor: ['rgba(255,99,132,0.4)','rgba(54,162,235,0.4)','rgba(0,200,83,0.4)']}],
+            labels : labels
+        }
+        this.setState({dataset:dataset})
+    }
+
+    handleShowSamples = (elem)=>{
+        if (elem[0]) {
+            let target = elem[0]._model.label
+            let filteredSamples = this.state.samples.filter((sample)=>(sample.sentiment1 === target))
+            this.setState({openSamDialog:true,filteredSamples:filteredSamples})
+        }
+    }
+    
     render(){
+        // const legendOpts = {
+            // onClick: (e, item) => {console.log('item',item)},
+            // onHover: (e, item) => alert(`Item with text ${item.text} and index ${item.index} hovered`),
+            // position:'right'
+        // }
         return(
             <React.Fragment>
             <ExpansionPanel className={this.props.classes.root} defaultExpanded={true}>
@@ -57,9 +91,12 @@ class OverviewPanel extends React.Component {
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
                     <Doughnut
-                        onElementsClick={(elem)=>{console.log(elem)}}
-                        data={this.data}
-                        options={{legend: {position:'bottom'}}}
+                        onElementsClick={this.handleShowSamples}
+                        data={this.state.dataset}
+                        options={{
+                            legend: {position:'right'}
+                        }}
+                        // getDatasetAtEvent={(dataset)=>{console.log('dataset',dataset)}}
                     />
                 </ExpansionPanelDetails>
                 <Divider />
@@ -68,54 +105,33 @@ class OverviewPanel extends React.Component {
                     <Button onClick={()=>{this.setState({openFltDialog:true})}}>Filters</Button>
                 </ExpansionPanelActions>
             </ExpansionPanel>
-
-            <Dialog 
+            <SampleDialog
+                open={this.state.openSamDialog} 
+                close={()=>{this.setState({openSamDialog:false})}}
+                head='Sentiment Samples'
+                samples={this.state.filteredSamples}
+            />
+            <SummaryDialog
                 open={this.state.openSumDialog} 
-                onClose={()=>{this.setState({openSumDialog:false})}}
-                maxWidth="xs" 
-            >
-                <DialogTitle>Sentiment Summary</DialogTitle>
-                <Divider/>
-                <DialogContent>
-                    <List>
-                        <ListItem>
-                        <Avatar>
-                            <Icon>sentiment_very_satisfied</Icon>
-                        </Avatar>
-                        <ListItemText primary="30%" secondary="total : 300" />
-                        </ListItem>
-                        <ListItem>
-                        <Avatar>
-                            <Icon>sentiment_satisfied</Icon>
-                        </Avatar>
-                        <ListItemText primary="20%" secondary="total : 200" />
-                        </ListItem>
-                        <ListItem>
-                        <Avatar>
-                            <Icon>sentiment_very_dissatisfied</Icon>
-                        </Avatar>
-                        <ListItemText primary="50%" secondary="total : 500" />
-                        </ListItem>
-                    </List>
-                </DialogContent>
-                <Divider/>
-                <DialogActions>
-                    <Button onClick={()=>{this.setState({openSumDialog:false})}} color="primary">
-                        Close
-                    </Button>
-                </DialogActions>
-            </Dialog>
+                close={()=>{this.setState({openSumDialog:false})}}
+                head='Sentiment Summary'
+                values={this.state.data}
+                labels={this.state.label}
+            />
             <FilterDialog 
                 open={this.state.openFltDialog} 
                 close={()=>(this.setState({openFltDialog:false}))}
-                target={this.state.target}
-                sentiments={this.state.sentiments}
-                intentions={this.state.intentions}
-                product={this.state.products}
+                target={'sentiment'}
+                pid={this.props.pid}
+                handleIsLoding={(isFetch)=>{this.setState({isLoading:isFetch})}}
+                handleChangeData={(data)=>{this.setState({data:data})}}
+                handleChangeLabel={(label)=>{this.setState({label:label})}}
+                handleChangeDataset={this.handleChangeDataset}
+                handleChangeSamples={(samples)=>{this.setState({samples:samples})}}
             />
             </React.Fragment>
         )
     }
 }
 
-export default withStyles(styles)(OverviewPanel)
+export default withStyles(styles)(SentimentPanel)

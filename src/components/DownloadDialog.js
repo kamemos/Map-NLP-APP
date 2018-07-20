@@ -23,10 +23,11 @@ class DownloadDialog extends React.Component{
         data.append('pid', this.props.pid);
         data.append('keywords', this.props.keywords);
         data.append('excludeKeywords', this.props.excludeKeywords);
+        this.setState({isLoding:true})
         axios.post('/upload/csv', data ).then((res)=>{
             this.setState({isLoding:false})
             if (!res.data.isSuccess){
-                this.setState({errMsg:res.data.errMsg})
+                this.setState({errMsg:res.data.errMsg,isLoding:false})
             }
         }).catch((err)=>{
             this.setState({isLoding:false})
@@ -37,7 +38,6 @@ class DownloadDialog extends React.Component{
         return(
             <Dialog
             open={this.props.open} 
-            onClose={this.props.close}
             >
                 <DialogTitle>Upload</DialogTitle>
                 <Divider/>
@@ -46,9 +46,9 @@ class DownloadDialog extends React.Component{
                             {this.state.errMsg}
                         </Typography>
                         <input type="file" onChange={(e)=>{this.setState({file:e.target.files[0]})}}/>
-                        <Button type="submit" onClick={this.handleFileUpload} color='primary'>Upload</Button>
+                        <Button type="submit" disabled={this.state.isLoding} onClick={this.handleFileUpload} color='primary'>Upload</Button>
                         <div style={{height:'5px'}}/>
-                        {(this.state.isLoding) ? <LinearProgress color="secondary"/> : ''}
+                        {(this.state.isLoding) && <LinearProgress color="secondary"/> }
                 </DialogContent>
                 <Divider/>
                 <DialogActions>

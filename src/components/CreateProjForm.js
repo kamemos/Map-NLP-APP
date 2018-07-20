@@ -15,7 +15,7 @@ import { RadioGroup,Radio,FormControlLabel,FormLabel } from '@material-ui/core';
 import axios from 'axios'
 
 function getModalStyle() {
-    const top = 20;
+    const top = 10;
     return {
         position: 'relative',
         top: `${top}%`,
@@ -106,6 +106,9 @@ class CreateProjForm extends React.Component {
             else {
                 window.location.reload();
             }
+        }).catch((err)=>{
+            console.log(err)
+            this.setState({errMsg:'error while uploading'})
         })
     }
 
@@ -157,7 +160,7 @@ class CreateProjForm extends React.Component {
                             <div style={{ marginTop: '10px' }} />
                             <div style={{ display: 'flex', flexDirection: 'row' }}>
                                 <FormControl style={{ flexDirection: 'row', width: '50%' }}>
-                                    <InputLabel>Keyword <i style={{color:'red'}}>*</i></InputLabel>
+                                    <InputLabel>Keyword</InputLabel>
                                     <Input value={this.state.keyword} onChange={this.handleChange('keyword')} />
                                 </FormControl>
                                 <Tooltip title="Add keyword">

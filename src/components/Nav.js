@@ -14,11 +14,12 @@ class Nav extends React.Component {
   render(){
     return (
       <div>
+        
         <AppBar position="static">
           <Toolbar>
             <Drawer/>
             <Typography variant="title" >
-              Essense
+              AB - DUL
             </Typography>
           </Toolbar>
         </AppBar>

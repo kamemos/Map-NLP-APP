@@ -9,6 +9,7 @@ import Icon from '@material-ui/core/Icon';
 import MediaCard from './MediaCard';
 import { withStyles } from '@material-ui/core/styles';
 import { Divider } from '@material-ui/core';
+import axios from 'axios'
 
 const styles = (theme) => ({
     root : {
@@ -25,26 +26,40 @@ const styles = (theme) => ({
 class ChannelPanel extends React.Component {
     constructor(props) {
         super(props)
+        this.pid = this.props.pid
+        this.state = {posts : []}
+    }
+
+    componentDidMount(){
+        let obj = {pid : this.pid}
+        axios.post('/dashboard/get_top3post',obj).then((res)=>{
+            console.log('top3psot',res.data.top3post)
+            this.setState({posts : res.data.top3post})
+        })
     }
 
     render(){
         return(
-            <ExpansionPanel className={this.props.classes.root} defaultExpanded={false}>
+            <ExpansionPanel className={this.props.classes.root} defaultExpanded={true}>
                 <ExpansionPanelSummary expandIcon={<Icon>expand_more</Icon>}>
                     <Typography variant="title" component="h3">Top 3 Engagement Post</Typography>
                 </ExpansionPanelSummary>
-                <ExpansionPanelDetails>
+                <ExpansionPanelDetails style={{display:'flex',justifyContent:'center'}}>
                     <div className={this.props.classes.mediaBar}>
-                    <MediaCard/>
-                    <MediaCard/>
-                    <MediaCard/>
+                    {this.state.posts.map((post,idx)=>{
+                        return (
+                            <MediaCard 
+                                key={'top3post'+idx} 
+                                text={post[0]}
+                                sentiment={post[1]}
+                                intention={post[2]}
+                                product={post[3]}
+                            />
+                        )
+                    })}
                     </div>
                 </ExpansionPanelDetails>
                 <Divider/>
-                <ExpansionPanelActions>
-                    <Button onClick={()=>{this.setState({openSumDialog:true})}}>Summary</Button>
-                    <Button>Filters</Button>
-                </ExpansionPanelActions>
             </ExpansionPanel>
         )
     }

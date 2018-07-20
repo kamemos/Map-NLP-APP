@@ -1,15 +1,15 @@
 import React from 'react'
-import { FormGroup,FormLabel,FormControlLabel,Checkbox } from '@material-ui/core';
+import { FormLabel,FormControlLabel,Checkbox } from '@material-ui/core';
 import { Dialog,DialogTitle,DialogContent,DialogActions } from '@material-ui/core';
 import { Divider,Button } from '@material-ui/core';
 import { GridList,GridListTile } from '@material-ui/core';
+import axios from 'axios'
 
 class FilterDialog extends React.Component {
     constructor(props){
         super(props)
         this.state = {
             open : this.props.open,
-            target : this.props.target,
             sentiments : [],
             intentions : [],
             products : [],
@@ -17,6 +17,15 @@ class FilterDialog extends React.Component {
             selectInt : false,
             selectPro : false   
         }
+        this.target = this.props.target,
+        this.pid = this.props.pid
+        this.close = this.props.close.bind(this)
+        this.handleIsLoding = this.props.handleIsLoding.bind(this)
+        this.handleChangeData = this.props.handleChangeData.bind(this)
+        this.handleChangeLabel = this.props.handleChangeLabel.bind(this)
+        this.handleChangeDataset = this.props.handleChangeDataset.bind(this)
+        this.handleChangeSamples = this.props.handleChangeSamples.bind(this)
+        // this.handleFetchData = this.handleFetchData.bind(this)
         this.sentiments = ['positive',
                             'neutral',
                             'negative']
@@ -42,10 +51,12 @@ class FilterDialog extends React.Component {
             let filteredItems = this.state[name].concat([e.target.value])
             this.setState({[name] : filteredItems})
         }
+
         else {
             let filteredItems = this.state[name].filter(item => (item !== e.target.value)) 
             this.setState({[name] : filteredItems})
         }
+
     };
 
     handleSelectAll = (name) => (e) => {
@@ -59,6 +70,43 @@ class FilterDialog extends React.Component {
         }
     }
 
+    handleFetchData = () => {
+        let obj = {}
+        obj['pid'] = this.pid
+        obj['target'] = this.target
+        obj['sentiment'] = this.state.sentiments
+        obj['intention'] = this.state.intentions
+        obj['product'] = this.state.products
+        // console.log(this.target,obj)
+        axios.post('/dashboard/get',obj).then((res)=>{
+            this.handleChangeData(res.data['values']) 
+            this.handleChangeLabel(res.data['labels'])
+            this.handleChangeDataset(res.data.values,res.data.labels)
+            // console.log('samples',JSON.parse(res.data.filtered_text))
+            this.handleChangeSamples(JSON.parse(res.data.filtered_text)['data'])
+        })
+    
+    }
+
+    handleSubmit = () => {
+        this.handleFetchData()
+        this.close()
+    }
+
+    componentDidMount(){
+        this.handleFetchData()
+        // console.log('fetching')
+        // let obj = {}
+        // obj['pid'] = this.pid
+        // obj['target'] = this.target
+        // obj['sentiment'] = this.state.sentiments
+        // obj['intention'] = this.state.intentions
+        // obj['product'] = this.state.products
+        // axios.post('/dashboard/get',obj).then((res)=>{
+        //     console.log(res.data)
+        // })
+    }
+
     render(){
         return (
             <Dialog 
@@ -70,7 +118,7 @@ class FilterDialog extends React.Component {
                 <DialogContent>
                     <div style={{height:'10px'}}/>
                     <GridList cellHeight={'auto'} cols={4}>
-                        <GridListTile key="Subheader" cols={4}>
+                        <GridListTile cols={4}>
                             <FormLabel component="legend">
                                 sentiments
                                 <Checkbox onChange={this.handleSelectAll('sentiments')}/>
@@ -78,15 +126,14 @@ class FilterDialog extends React.Component {
                         </GridListTile>
                         {this.sentiments.map((item,idx) => {
                             return (
-                                <GridListTile cols={1}>
+                                <GridListTile key={idx} cols={1}>
                                     <FormControlLabel
                                     control={
                                         <Checkbox
-                                        key={idx}
                                         checked={this.state.sentiments.includes(item)}
                                         onChange={this.handleOnChange('sentiments')}
                                         value={item}
-                                        color="primary"
+                                        color="secondary"
                                         indeterminate
                                         />
                                     }
@@ -95,7 +142,7 @@ class FilterDialog extends React.Component {
                                 </GridListTile>
                             )
                         })}
-                        <GridListTile key="Subheader" cols={4}>
+                        <GridListTile cols={4}>
                             <FormLabel component="legend">
                                 intentions
                                 <Checkbox onChange={this.handleSelectAll('intentions')}/>
@@ -103,15 +150,14 @@ class FilterDialog extends React.Component {
                         </GridListTile>
                         {this.intentions.map((item,idx) => {
                             return (
-                                <GridListTile cols={1}>
+                                <GridListTile key={idx} cols={1}>
                                     <FormControlLabel
                                     control={
                                         <Checkbox
-                                        key={idx}
                                         checked={this.state.intentions.includes(item)}
                                         onChange={this.handleOnChange('intentions')}
                                         value={item}
-                                        color="primary"
+                                        color="secondary"
                                         indeterminate
                                         />
                                     }
@@ -120,7 +166,7 @@ class FilterDialog extends React.Component {
                                 </GridListTile>
                             )
                         })}
-                        <GridListTile key="Subheader" cols={4}>
+                        <GridListTile cols={4}>
                             <FormLabel component="legend">
                                 products
                                 <Checkbox onChange={this.handleSelectAll('products')}/>
@@ -128,15 +174,14 @@ class FilterDialog extends React.Component {
                         </GridListTile>
                         {this.products.map((item,idx) => {
                             return (
-                                <GridListTile cols={1}>
+                                <GridListTile key={idx} cols={1}>
                                     <FormControlLabel
                                     control={
                                         <Checkbox
-                                        key={idx}
                                         checked={this.state.products.includes(item)}
                                         onChange={this.handleOnChange('products')}
                                         value={item}
-                                        color="primary"
+                                        color="secondary"
                                         indeterminate
                                         />
                                     }
@@ -152,7 +197,7 @@ class FilterDialog extends React.Component {
                     <Button onClick={this.props.close} color="primary">
                         Close
                     </Button>
-                    <Button onClick={this.props.clos} color="primary">
+                    <Button onClick={this.handleSubmit} color="primary">
                         Submit
                     </Button>
                 </DialogActions>

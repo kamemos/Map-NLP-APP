@@ -29,7 +29,7 @@ class BrandPanel extends React.Component {
                 borderWidth: 1,
                 hoverBackgroundColor: 'rgba(0,200,83,0.4)',
                 hoverBorderColor: 'rgba(0,200,83,1)',
-                data: [65, 59, 80, 81]
+                data: [0,0,0,0]
               },
               
             ]

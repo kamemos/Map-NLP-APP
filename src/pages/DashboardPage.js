@@ -1,13 +1,6 @@
 import React from 'react'
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import Icon from '@material-ui/core/Icon';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
-import OveriewPanel from '../components/OverviewPanel'
+import EditDialog from '../components/EditDialog'
 import BrandPanel from '../components/BrandPanel'
 import ProductPanel from '../components/ProductPanel'
 import SentimentPanel from '../components/SentimentPanel'
@@ -19,7 +12,7 @@ import { withStyles } from '@material-ui/core/styles';
 
 const styles = (theme) => ({
     dashboardLayout : {
-        margin: theme.spacing.unit * 8
+        margin: theme.spacing.unit * 4
     },
     pseudoBox : {
         height: theme.spacing.unit * 2
@@ -27,36 +20,54 @@ const styles = (theme) => ({
 });
 
 class DashboardPage extends React.Component{
+    constructor(props){
+        super(props)
+        this.pid = this.props.match.params.pid
+        this.state = {
+            openEditDialog:false,
+            text: '',
+            sentiment: '',
+            intention: '',
+            product: '',
+        }
+    }
+
     render(){
+        const AppContext = React.createContext()
+        
         return(
+            <React.Fragment>
             <div className={this.props.classes.dashboardLayout}>
             <Grid container spacing={24}>
+                {/* <Grid item xs={12}>
+                    <Button>Export</Button>
+                </Grid> */}
                 <Grid item xs={12}>
-                    <OveriewPanel/>
-                </Grid>
-                <Grid item xs={12}>
-                    <TimeSeriesPanel/>
+                    <TimeSeriesPanel pid={this.pid}/>
                 </Grid>
                 <Grid item xs={6}>
-                    <SentimentPanel/>
+                    <SentimentPanel pid={this.pid}/>
                 </Grid>
                 <Grid item xs={6}>
-                    <IntentionPanel/>
+                    <IntentionPanel pid={this.pid}/>
                 </Grid>
                 <Grid item xs={6}>
-                    <ChannelPanel/>
+                    <ChannelPanel pid={this.pid}/>
                 </Grid>
                 <Grid item xs={6}>
-                    <BrandPanel/>
+                    <BrandPanel pid={this.pid}/>
                 </Grid>
                 <Grid item xs={12}>
-                    <ProductPanel/>
+                    <ProductPanel pid={this.pid}/>
                 </Grid>
                 <Grid item xs={12}>
-                    <EngagementPanel/>
+                    <EngagementPanel pid={this.pid}/>
                 </Grid>
             </Grid>
             </div>
+            <EditDialog/>
+            </React.Fragment>
+            
         )
     }
 }

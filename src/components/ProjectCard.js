@@ -42,6 +42,7 @@ const styles = (theme) => ({
 class ProjectCard extends React.Component {
     constructor(props){
         super(props)
+        this.pid = this.props.id
         this.state = { anchorEl: null,
                        anchorKey: null,
                        openUpload: false,
@@ -57,6 +58,30 @@ class ProjectCard extends React.Component {
             if (res.status == 200){
                 window.location.reload();
             }
+        })
+    }
+
+    handleExport = (id) => {
+        console.log('check')
+        let obj = {
+            pid : id,
+            responseType: "blob"
+        }
+
+        axios.post('/project/get_csv',obj).then((res)=>{
+            console.log(res.file)
+            let blob = new Blob([res.data], { type: "text/csv" })
+            let fileName = 'predict.csv';
+            let objectUrl = URL.createObjectURL(blob);
+            let a = document.createElement('a');
+            let url = window.URL.createObjectURL(blob);
+            // window.open(url, "_self");
+            a.href = objectUrl;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();     
+            document.body.removeChild(a);   
+            URL.revokeObjectURL(objectUrl);
         })
     }
 
@@ -138,11 +163,10 @@ class ProjectCard extends React.Component {
                 <Divider />
                 <div style={{height:'5px'}}/>
                 <CardActions className={this.props.classes.cardBottom}>
-                    <Link to="ideas" params={{pid:this.props.id}}>
-                    <Button size="small" color="primary">
-                        Dashboard
-                    </Button>
+                    <Link to={'/dashboard/'+this.props.id} style={{ textDecoration: 'none' }}>
+                        <Button size="small" color="primary">Dashboard</Button>
                     </Link>
+                    <Button onClick={()=>{this.handleExport(this.pid)}} size="small" variant="contained" color="primary">Export</Button>
                     {(this.props.useCrawler) ? <Button size="small" onClick={()=>{this.setState({openUpload:true})}} variant="contained" color="secondary">upload</Button> : ''}
                 </CardActions>
             </Card>
