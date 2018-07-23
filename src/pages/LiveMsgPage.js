@@ -1,6 +1,6 @@
 import React from 'react'
 import MediaCard from '../components/MediaCard'
-import { Paper,Input,Button,CircularProgress,Divider } from '@material-ui/core';
+import { Paper,Input,Button,CircularProgress,Divider,Icon } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import EditDialog from '../components/EditDialog'
 import axios from 'axios'
@@ -12,8 +12,8 @@ const styles = (theme) => ({
         padding: theme.spacing.unit * 2
     },
     paper: {
-        width: '60vw',
-        height: '70vh',
+        width: '80%',
+        height: '80vh',
         padding: '20px',
         display:'flex',
         flexDirection: 'column',
@@ -29,7 +29,7 @@ const styles = (theme) => ({
         backgroundColor: '#fafafa'
     },
     inputBox: {
-        width: '80%'
+        width: '95%'
     },
     chatBubble: { 
         wordBreak: 'break-all',
@@ -87,7 +87,6 @@ class LiveMsgPage extends React.Component {
                             )
                         })}
                     </div>
-                    <Divider style={{margin:'5px 0 5px 0'}}/>
                     <form onSubmit={this.handleSubmit} style={{display:'flex',justifyContent:'space-around',width:'100%'}}>
                     <Input 
                         value={this.state.msg} 
@@ -97,7 +96,8 @@ class LiveMsgPage extends React.Component {
                     <div style={{display:'flex',justifyContent:'center',alignItems:'center'}}>
                         <Button 
                             onClick={this.handleSubmit} 
-                            variant="contained" 
+                            variant="contained"
+                            size='large' 
                             color="primary"
                             style={{zIndex:'1'}}
                             disabled={this.state.isLoading}

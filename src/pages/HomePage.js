@@ -31,8 +31,8 @@ class HomePage extends React.Component{
                         position:'relative'
                     }}
                 >
-                    <h1 style={{color:'white',fontSize:'500%'}}>To feel how social feel</h1>
-                    <h1 style={{color:'white'}}>AB - DUL</h1>
+                    <h1 style={{color:'white',fontSize:'300%',textAlign:'center'}}>To feel how social feel</h1>
+                    <h1 style={{color:'white',fontSize:'300%'}}><i style={{color:'red',fontSize:'150%'}}>D</i>eep-<i style={{color:'red',fontSize:'150%'}}>S</i>ight</h1>
                     <Link to="/project" style={{ textDecoration: 'none' }}>
                         <Button color="secondary" sty variant='extendedFab' size="large">ENGAGE</Button>
                     </Link>

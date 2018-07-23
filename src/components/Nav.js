@@ -18,9 +18,7 @@ class Nav extends React.Component {
         <AppBar position="static">
           <Toolbar>
             <Drawer/>
-            <Typography variant="title" >
-              AB - DUL
-            </Typography>
+            <h3 style={{color:'white'}}><i style={{color:'red',fontSize:'150%'}}>D</i>eep-<i style={{color:'red',fontSize:'150%'}}>S</i>ight</h3>
           </Toolbar>
         </AppBar>
       </div>

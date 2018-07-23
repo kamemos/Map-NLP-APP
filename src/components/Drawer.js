@@ -38,7 +38,7 @@ class Drawer extends React.Component{
             <div>
                 <List>
                     <Divider />
-                    {/* <Link to="/home" style={{ textDecoration: 'none' }}>
+                    <Link to="/" style={{ textDecoration: 'none' }}>
                     <ListItem button>
                         <Avatar>
                             <Icon color='secondary'>home</Icon>
@@ -48,7 +48,7 @@ class Drawer extends React.Component{
                         </ListItemText>
                     </ListItem>
                     </Link>
-                    <Divider /> */}
+                    <Divider />
                     <Link to="/project" style={{ textDecoration: 'none' }}>
                         <ListItem button>
                             <Avatar>
